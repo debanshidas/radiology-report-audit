@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Radiology Report Audit & Quality Analyzer</title>
+  <meta name="description" content="AI-powered quality assurance tool for radiology reports — analyzes completeness, terminology, and clinical alignment before final approval.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚕️</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ══════════════════════════ SIDEBAR ══════════════════════════ -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon">⚕️</span>
+      <div>
+        <div class="brand-name">Radiology Audit</div>
+        <div class="brand-tagline">AI Quality Analyzer</div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <button class="nav-item" data-page="dashboard">
+        <span class="nav-icon">🏠</span> Dashboard
+      </button>
+      <button class="nav-item" data-page="upload">
+        <span class="nav-icon">📤</span> Upload Report
+      </button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" data-page="analysis">
+        <span class="nav-icon">🤖</span> AI Analysis
+      </button>
+      <button class="nav-item" data-page="quality">
+        <span class="nav-icon">📊</span> Quality Dashboard
+      </button>
+      <button class="nav-item" data-page="suggestions">
+        <span class="nav-icon">💡</span> AI Suggestions
+      </button>
+      <button class="nav-item" data-page="report">
+        <span class="nav-icon">💾</span> Audit Report
+      </button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" data-page="settings">
+        <span class="nav-icon">⚙️</span> Settings
+      </button>
+      <button class="nav-item" data-page="about">
+        <span class="nav-icon">ℹ️</span> About
+      </button>
+    </div>
+
+    <div class="sidebar-api">
+      <label id="sidebar-provider-label">🔑 Groq API Key</label>
+      <input type="password" id="api-key-sidebar" placeholder="gsk_...">
+      <div id="api-status" class="api-status">No key set</div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════ MAIN CONTENT ══════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ────────────────── PAGE: DASHBOARD ────────────────── -->
+    <section class="page" id="page-dashboard">
+      <div class="page-header">
+        <span class="ph-icon">⚕️</span>
+        <div>
+          <div class="ph-title">AI-Powered Radiology Report Audit</div>
+          <div class="ph-sub">Intelligent quality assurance — evaluate reports before final approval</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-accent" style="background:#0d9488;"></div>
+          <div class="stat-icon">📄</div>
+          <div class="stat-value" id="stat-analyzed">0</div>
+          <div class="stat-label">Reports Analyzed</div>
+          <div class="stat-sub">this session</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-accent" style="background:#3b82f6;"></div>
+          <div class="stat-icon">📊</div>
+          <div class="stat-value" id="stat-score">—</div>
+          <div class="stat-label">Last Quality Score</div>
+          <div class="stat-sub">out of 100</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-accent" style="background:#10b981;"></div>
+          <div class="stat-icon">🔑</div>
+          <div class="stat-value" id="stat-api" style="font-size:1.1rem;margin-top:.3rem;">Not Set</div>
+          <div class="stat-label">API Status</div>
+          <div class="stat-sub">Groq / Gemini AI</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-accent" style="background:#8b5cf6;"></div>
+          <div class="stat-icon">💾</div>
+          <div class="stat-value" id="stat-exported">0</div>
+          <div class="stat-label">Reports Exported</div>
+          <div class="stat-sub">PDF downloads</div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="info-banner">
+        📌 <strong>What this tool does:</strong> Evaluates radiology reports <em>before</em> they are finalized — checking completeness, terminology, clinical alignment, and formatting using AI. It does <strong>not</strong> generate diagnoses or new reports.
+      </div>
+
+      <!-- Features -->
+      <p class="section-title">🚀 What You Can Do</p>
+      <div class="features-grid">
+        <div class="feature-card"><div class="fc-icon">📤</div><div class="fc-title">Upload Report</div><div class="fc-desc">Upload PDF, DOCX, or TXT — or paste text directly for instant analysis.</div></div>
+        <div class="feature-card"><div class="fc-icon">🤖</div><div class="fc-title">AI Analysis</div><div class="fc-desc">Groq (Llama 3.3 70B) or Gemini AI evaluates 5 quality dimensions in seconds.</div></div>
+        <div class="feature-card"><div class="fc-icon">📊</div><div class="fc-title">Quality Dashboard</div><div class="fc-desc">Score, readiness status, and per-dimension quality breakdown.</div></div>
+        <div class="feature-card"><div class="fc-icon">💾</div><div class="fc-title">Export PDF</div><div class="fc-desc">Download a professional branded audit report as PDF.</div></div>
+      </div>
+
+      <!-- How it works -->
+      <p class="section-title mt-3">📋 How It Works</p>
+      <div class="steps-grid">
+        <div class="step-card"><div class="step-num">1</div><div class="step-title">Set API Key</div><div class="step-desc">Enter your Groq or Gemini key in the sidebar or Settings.</div></div>
+        <div class="step-card"><div class="step-num">2</div><div class="step-title">Upload Report</div><div class="step-desc">Upload a PDF/DOCX/TXT or paste report text directly.</div></div>
+        <div class="step-card"><div class="step-num">3</div><div class="step-title">Run AI Audit</div><div class="step-desc">Click Analyze — AI reviews the report in seconds.</div></div>
+        <div class="step-card"><div class="step-num">4</div><div class="step-title">Review & Export</div><div class="step-desc">View dashboard, suggestions, and download your PDF.</div></div>
+      </div>
+
+      <hr>
+      <p class="text-small text-muted">⚠️ Disclaimer: AI-assisted quality audit only. Not a clinical diagnosis. All suggestions must be reviewed by a qualified radiologist.</p>
+    </section>
+
+    <!-- ────────────────── PAGE: UPLOAD ────────────────── -->
+    <section class="page" id="page-upload">
+      <div class="page-header">
+        <span class="ph-icon">📤</span>
+        <div>
+          <div class="ph-title">Upload Radiology Report</div>
+          <div class="ph-sub">Upload a file or paste your report text, then configure the audit settings</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Left: Upload + Text -->
+        <div>
+          <p class="section-title">📁 Upload File</p>
+          <div class="upload-zone" id="upload-zone">
+            <div class="uz-icon">📂</div>
+            <div class="uz-title">Drag & drop your file here</div>
+            <div class="uz-sub">Supports PDF, DOCX, TXT — max 10 MB</div>
+            <button class="btn btn-secondary btn-sm uz-btn" type="button">Browse Files</button>
+            <input type="file" id="file-input" accept=".pdf,.docx,.txt" hidden>
+          </div>
+
+          <div class="mt-2">
+            <span class="file-badge" id="file-badge" style="display:none;"></span>
+          </div>
+
+          <div class="form-group mt-2">
+            <label class="form-label">Report Text</label>
+            <textarea class="form-control" id="report-textarea" rows="12"
+              placeholder="Paste your radiology report text here, or upload a file above..."></textarea>
+            <div class="flex-between mt-1">
+              <span class="text-small text-muted" id="char-count">0 characters</span>
+              <div class="flex-gap gap-sm">
+                <button class="btn btn-secondary btn-sm" onclick="clearReport()">🧼 Clear</button>
+                <button class="btn btn-primary btn-sm" id="analyze-btn">🚀 Analyze Report →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Config -->
+        <div>
+          <p class="section-title">🩺 Audit Configuration</p>
+
+          <div class="form-group">
+            <label class="form-label">📂 Load Sample Report</label>
+            <select class="form-control" id="sample-picker">
+              <option value="">— Select a demo report —</option>
+              <option value="Normal Chest X-Ray (High Quality)">Normal Chest X-Ray (High Quality)</option>
+              <option value="Incomplete Brain MRI (Missing Details)">Incomplete Brain MRI (Missing Details)</option>
+              <option value="Abdomen CT (Logical Contradiction)">Abdomen CT (Logical Contradiction)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">🩻 Modality / Report Type</label>
+            <select class="form-control" id="modality-select"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">📋 Sections to Audit (click to toggle)</label>
+            <div class="section-checkboxes" id="section-chips"></div>
+          </div>
+
+          <div class="info-banner mt-2">
+            <strong>Tips:</strong><br>
+            • Click sections above to include/exclude them<br>
+            • Load a sample report to see the tool in action<br>
+            • The AI checks each selected section for presence and quality
+          </div>
+
+          <button class="btn btn-primary btn-full btn-lg mt-2" id="analyze-btn-2" onclick="runAnalysis()">🤖 Run AI Quality Audit →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: AI ANALYSIS ────────────────── -->
+    <section class="page" id="page-analysis">
+      <div class="page-header">
+        <span class="ph-icon">🤖</span>
+        <div>
+          <div class="ph-title">AI Analysis</div>
+          <div class="ph-sub">AI is evaluating your radiology report</div>
+        </div>
+      </div>
+
+      <div class="analysis-wrapper">
+        <div id="analysis-spinner-wrap">
+          <div class="analysis-spinner"></div>
+          <h2 style="color:#0f172a;margin-bottom:.5rem;">Analyzing Report...</h2>
+          <p class="text-muted text-small">This usually takes 5–15 seconds. Please wait.</p>
+        </div>
+
+        <div class="analysis-steps" id="analysis-steps"></div>
+
+        <!-- Error block -->
+        <div id="analysis-error" style="display:none;margin-top:1.5rem;" class="card">
+          <div style="color:#991b1b;font-weight:700;font-size:1rem;margin-bottom:.5rem;">❌ Analysis Failed</div>
+          <div class="error-msg text-small" style="color:#7f1d1d;margin-bottom:1rem;"></div>
+          <div class="flex-gap">
+            <button class="btn btn-secondary" id="retry-btn">← Back to Upload</button>
+            <a href="https://console.groq.com/keys" target="_blank" class="btn btn-primary">Get Free Groq Key →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: QUALITY DASHBOARD ────────────────── -->
+    <section class="page" id="page-quality">
+      <div class="page-header">
+        <span class="ph-icon">📊</span>
+        <div>
+          <div class="ph-title">Quality Dashboard</div>
+          <div class="ph-sub">Comprehensive quality assessment results</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:1.5rem;">
+        <!-- Score Gauge -->
+        <div class="gauge-wrapper">
+          <svg id="score-gauge-svg" width="200" height="200" viewBox="0 0 200 200"></svg>
+          <div id="gauge-label" class="gauge-label"></div>
+          <div id="gauge-justification" class="gauge-justification"></div>
+        </div>
+
+        <!-- Status + Strengths -->
+        <div>
+          <p class="section-title">🏥 Readiness Status</p>
+          <div id="readiness-badge" class="readiness-badge">—</div>
+
+          <p class="section-title mt-2">✅ Identified Strengths</p>
+          <div id="strengths-list"></div>
+
+          <p class="section-title mt-2">⚠️ Missing Sections</p>
+          <div id="missing-sections"></div>
+        </div>
+      </div>
+
+      <!-- Executive summary -->
+      <div class="card mb-2">
+        <p class="section-title">📝 Executive Summary</p>
+        <div id="exec-summary" class="text-muted" style="line-height:1.7;font-size:.9rem;"></div>
+      </div>
+
+      <div class="two-col">
+        <!-- Breakdown -->
+        <div class="card">
+          <p class="section-title">📈 Quality Breakdown</p>
+          <div id="breakdown-bars"></div>
+        </div>
+
+        <!-- Section Checklist -->
+        <div class="card">
+          <p class="section-title">📋 Section Completeness</p>
+          <div id="checklist-header" class="checklist-header"></div>
+          <div id="section-checklist"></div>
+        </div>
+      </div>
+
+      <hr>
+      <div class="flex-gap">
+        <button class="btn btn-primary"   id="goto-suggestions-btn">💡 View AI Suggestions →</button>
+        <button class="btn btn-purple"    id="goto-report-btn">💾 Download Report →</button>
+        <button class="btn btn-secondary" id="goto-upload-btn">📤 Analyze Another</button>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: AI SUGGESTIONS ────────────────── -->
+    <section class="page" id="page-suggestions">
+      <div class="page-header">
+        <span class="ph-icon">💡</span>
+        <div>
+          <div class="ph-title">AI Suggestions</div>
+          <div class="ph-sub">Targeted recommendations to improve your report quality</div>
+        </div>
+      </div>
+
+      <!-- Summary badges -->
+      <div class="three-col mb-2">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:800;color:#0d9488;" id="sug-total">0</div>
+          <div class="stat-label">Total Suggestions</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:800;color:#ef4444;" id="sug-missing">0</div>
+          <div class="stat-label">Missing Section Issues</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:1.8rem;font-weight:800;color:#3b82f6;" id="sug-score">—</div>
+          <div class="stat-label">Quality Score</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-missing"     onclick="switchTab('tab-missing')">🔴 Missing</button>
+        <button class="tab-btn"        data-tab="tab-template"    onclick="switchTab('tab-template')">🔵 Template</button>
+        <button class="tab-btn"        data-tab="tab-terminology" onclick="switchTab('tab-terminology')">🟣 Terminology</button>
+        <button class="tab-btn"        data-tab="tab-formatting"  onclick="switchTab('tab-formatting')">🟢 Formatting</button>
+        <button class="tab-btn"        data-tab="tab-impression"  onclick="switchTab('tab-impression')">🟠 Impression</button>
+        <button class="tab-btn"        data-tab="tab-remarks"     onclick="switchTab('tab-remarks')">⚫ Remarks</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-missing"></div>
+      <div class="tab-panel"        id="tab-template"></div>
+      <div class="tab-panel"        id="tab-terminology"></div>
+      <div class="tab-panel"        id="tab-formatting"></div>
+      <div class="tab-panel"        id="tab-impression"></div>
+      <div class="tab-panel"        id="tab-remarks"></div>
+
+      <hr>
+      <div class="flex-gap">
+        <button class="btn btn-secondary" onclick="navigate('quality')">← Quality Dashboard</button>
+        <button class="btn btn-purple"    onclick="navigate('report')">💾 Download Report</button>
+        <button class="btn btn-secondary" onclick="navigate('upload')">📤 Analyze Another</button>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: AUDIT REPORT ────────────────── -->
+    <section class="page" id="page-report">
+      <div class="page-header">
+        <span class="ph-icon">💾</span>
+        <div>
+          <div class="ph-title">Audit Report</div>
+          <div class="ph-sub">Download your professional quality audit report</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Preview -->
+        <div>
+          <p class="section-title">📋 Report Preview</p>
+          <div class="report-preview">
+            <div id="report-preview-content">
+              <div class="empty-state">
+                <div class="es-icon">📄</div>
+                <div class="es-title">No audit results yet</div>
+                <div class="es-sub">Run an analysis first to generate a report.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download -->
+        <div>
+          <p class="section-title">📥 Download Options</p>
+
+          <div class="info-banner">
+            <strong>📄 What's included in the PDF:</strong><br>
+            ✦ Application header &amp; branding<br>
+            ✦ Report metadata (filename, modality, date)<br>
+            ✦ Quality score &amp; readiness status<br>
+            ✦ Quality breakdown by dimension<br>
+            ✦ Strengths &amp; missing sections<br>
+            ✦ Full section completeness audit<br>
+            ✦ All AI suggestions (6 categories)<br>
+            ✦ Executive summary &amp; disclaimer
+          </div>
+
+          <button class="btn btn-purple btn-full btn-lg mt-2" id="pdf-download-btn">⬇️ Download PDF Audit Report</button>
+          <button class="btn btn-secondary btn-full mt-1" id="json-download-btn">📋 Export Raw JSON</button>
+
+          <p class="text-small text-muted mt-2" style="text-align:center;">JSON export useful for programmatic integration.</p>
+
+          <hr>
+          <div class="flex-gap" style="justify-content:center;">
+            <button class="btn btn-secondary" onclick="navigate('quality')">← Dashboard</button>
+            <button class="btn btn-secondary" onclick="navigate('suggestions')">💡 Suggestions</button>
+            <button class="btn btn-secondary" onclick="navigate('upload')">📤 New Report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: SETTINGS ────────────────── -->
+    <section class="page" id="page-settings">
+      <div class="page-header">
+        <span class="ph-icon">⚙️</span>
+        <div>
+          <div class="ph-title">Settings</div>
+          <div class="ph-sub">Configure your AI provider and API key</div>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <!-- Left: API Key -->
+        <div>
+          <p class="section-title">🔑 AI API Configuration</p>
+          <div class="info-banner" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#bbf7d0;">
+            <strong style="color:#166534;">🔒 Security Note:</strong>
+            <span style="color:#166534;"> Your API key is stored only in your browser session and is never transmitted to or stored by any server.</span>
+          </div>
+
+          <div class="form-group mt-2">
+            <label class="form-label">🤖 AI Provider</label>
+            <select class="form-control" id="provider-select">
+              <option value="groq">⚡ Groq (Llama 3.3 70B - Free &amp; Ultra Fast)</option>
+              <option value="gemini">✨ Google Gemini (Gemini 2.0 Flash)</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-2">
+            <label class="form-label" id="api-key-label">🔑 Groq API Key</label>
+            <input type="password" class="form-control" id="api-key-settings" placeholder="gsk_...">
+          </div>
+
+          <div class="flex-gap mt-1">
+            <button class="btn btn-primary" id="test-key-btn">🔌 Test Connection</button>
+            <button class="btn btn-danger btn-sm" onclick="App.apiKey=''; document.getElementById('api-key-sidebar').value=''; document.getElementById('api-key-settings').value=''; updateApiStatus(); toast('Key cleared.')">🗑️ Clear Key</button>
+          </div>
+
+          <div id="test-result" class="mt-2 text-small"></div>
+        </div>
+
+        <!-- Right: How to get key -->
+        <div>
+          <p class="section-title">⚡ Get Free Groq Key (Recommended)</p>
+          <div class="card">
+            <div class="how-to-step"><span class="how-to-num">1</span> Visit <a href="https://console.groq.com/keys" target="_blank"><strong>console.groq.com/keys</strong></a></div>
+            <div class="how-to-step"><span class="how-to-num">2</span> Sign in with <strong>Google / GitHub</strong></div>
+            <div class="how-to-step"><span class="how-to-num">3</span> Click <strong>"Create API Key"</strong></div>
+            <div class="how-to-step"><span class="how-to-num">4</span> <strong>Copy</strong> key (starts with <code>gsk_...</code>)</div>
+            <div class="how-to-step" style="border:none"><span class="how-to-num">5</span> <strong>Paste</strong> key in Settings / Sidebar</div>
+          </div>
+          <a href="https://console.groq.com/keys" target="_blank" class="btn btn-primary btn-full mt-2">🚀 Get Free Groq API Key →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────────────────── PAGE: ABOUT ────────────────── -->
+    <section class="page" id="page-about">
+      <div class="page-header">
+        <span class="ph-icon">ℹ️</span>
+        <div>
+          <div class="ph-title">About This Application</div>
+          <div class="ph-sub">Purpose, technology stack, and project information</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Left -->
+        <div>
+          <p class="section-title">🎯 Purpose & Mission</p>
+          <div class="card" style="line-height:1.75;font-size:.9rem;color:#334155;">
+            <p><strong>AI-Powered Radiology Report Audit &amp; Quality Analyzer</strong> is a clinical quality assurance tool designed to help radiologists and QA teams evaluate radiology reports <em>before</em> they are finalized and signed.</p>
+            <br>
+            <p>It uses <strong>Groq (Llama 3.3 70B)</strong> or <strong>Google Gemini AI</strong> to analyze reports across multiple quality dimensions — identifying missing sections, flagging ambiguous terminology, detecting logical mismatches between findings and impressions.</p>
+            <br>
+            <p><strong>Important:</strong> This tool does <u>not</u> generate radiology reports or clinical diagnoses. It is purely an evaluative QA assistant.</p>
+          </div>
+
+          <p class="section-title mt-3">📊 Quality Dimensions Evaluated</p>
+          <div class="card" style="padding:1rem;">
+            <div class="how-to-step" style="border-bottom:1px solid #f1f5f9;"><span style="font-size:1.2rem;">📋</span>&nbsp; <b>Completeness</b> — all mandatory sections present</div>
+            <div class="how-to-step" style="border-bottom:1px solid #f1f5f9;"><span style="font-size:1.2rem;">🔬</span>&nbsp; <b>Medical Terminology</b> — standard clinical language</div>
+            <div class="how-to-step" style="border-bottom:1px solid #f1f5f9;"><span style="font-size:1.2rem;">⚖️</span>&nbsp; <b>Clinical Alignment</b> — findings ↔ impression consistency</div>
+            <div class="how-to-step" style="border-bottom:1px solid #f1f5f9;"><span style="font-size:1.2rem;">📐</span>&nbsp; <b>Formatting</b> — structure and template compliance</div>
+            <div class="how-to-step" style="border:none;"><span style="font-size:1.2rem;">🎯</span>&nbsp; <b>Impression Quality</b> — conclusion completeness</div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div>
+          <p class="section-title">🛠️ Technology Stack</p>
+          <div class="card" style="padding:0;overflow:hidden;">
+            <table class="tech-table">
+              <thead><tr><th>Technology</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><strong>HTML5 / CSS3 / JS</strong></td><td>Single Page Application (SPA)</td></tr>
+                <tr><td><strong>Groq AI (Llama 3.3)</strong></td><td>Ultra-fast LLM audit engine</td></tr>
+                <tr><td><strong>Google Gemini AI</strong></td><td>Alternative AI audit engine</td></tr>
+                <tr><td><strong>Flask (Optional)</strong></td><td>Python backend API server</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="section-title mt-3">🔒 Privacy & Security</p>
+          <div class="card" style="font-size:.86rem;color:#166534;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#bbf7d0;line-height:1.8;">
+            ✅ API keys are stored <strong>only in your browser session</strong><br>
+            ✅ Report text is sent <strong>directly to the AI provider</strong><br>
+            ✅ Works directly in your browser on GitHub Pages
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        ⚠️ <strong>Clinical Disclaimer:</strong> This application is an AI-assisted quality audit tool for educational and quality assurance purposes only. It does not constitute a clinical diagnosis, medical opinion, or legal document. All AI-generated suggestions must be reviewed and validated by a qualified, licensed radiologist before any clinical action is taken. The developers assume no liability for clinical decisions made based on this tool's output.
+      </div>
+
+      <hr>
+      <p style="text-align:center;color:#94a3b8;font-size:.8rem;">⚕️ AI-Powered Radiology Report Audit &amp; Quality Analyzer</p>
+    </section>
+
+  </main><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

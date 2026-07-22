@@ -1,0 +1,23 @@
+PATIENT NAME: John Doe
+MRN: 987654321
+EXAM DATE: 2026-07-23
+PROCEDURE: Chest Radiograph, 2 Views (PA and Lateral)
+CLINICAL INDICATION: 45-year-old male with chronic cough and history of smoking. Assess for pneumonia or masses.
+COMPARISON: None.
+
+FINDINGS:
+Lungs and Pleura:
+The lungs are clear and well-expanded. No focal airspace consolidation, pleural effusion, or pneumothorax is identified. There is no evidence of pulmonary congestion or interstitial edema.
+Cardiovascular:
+The cardiomediastinal silhouette is normal in size and configuration. The thoracic aorta is normal in caliber.
+Mediastinum and Hila:
+Hilar and mediastinal contours are within normal limits. No adenopathy is identified.
+Bones and Soft Tissues:
+The visualized osseous structures and surrounding soft tissues of the chest wall are intact and within normal limits for age. No acute bony abnormalities are seen.
+
+IMPRESSION:
+1. No active cardiopulmonary disease.
+2. Specifically, no evidence of pneumonia, pulmonary mass, pleural effusion, or pneumothorax.
+
+REPORT BY: Dr. Jane Smith, MD
+SIGNATURE: Digitally Signed by Dr. Jane Smith, MD on 2026-07-23 09:30 AM

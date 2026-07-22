@@ -1,0 +1,28 @@
+PATIENT NAME: Athena
+MRN: 11223344
+EXAM DATE: 2026-07-22
+PROCEDURE: CT Abdomen and Pelvis with IV Contrast
+CLINICAL INDICATION: 34-year-old female presenting with acute right lower quadrant abdominal pain, fever, and leukocytosis. R/O acute appendicitis.
+COMPARISON: None.
+
+FINDINGS:
+Lower Chest:
+The lung bases are clear. No pleural effusion.
+
+Abdomen:
+Liver, spleen, pancreas, gallbladder, adrenal glands, and kidneys are normal in size and appearance. No focal lesions.
+Bowel:
+There is marked dilatation, wall thickening, and hyperenhancement of the appendix in the right lower quadrant, measuring 9 mm in diameter. Surrounding inflammatory fat stranding is noted, along with a small amount of free fluid. No appendicolith or signs of perforation are identified. The rest of the small and large bowel loops are normal.
+Peritoneum:
+No free air. Small amount of free pelvic fluid.
+
+Bones:
+No acute osseous abnormality.
+
+IMPRESSION:
+1. Normal CT examination of the abdomen and pelvis.
+2. No evidence of appendicitis, bowel obstruction, or other acute intra-abdominal process.
+3. Recommend discharge and clinical follow-up if symptoms persist.
+
+REPORT BY: Dr. John Watson, MD
+SIGNATURE: Digitally Signed by Dr. John Watson, MD on 2026-07-22 11:45 PM
